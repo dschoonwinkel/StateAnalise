@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StateMainWindow</class>
+ <widget class="QWidget" name="StateMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>StateMainWindow</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <layout class="QVBoxLayout" name="DebietVerticalLayout">
+         <item>
+          <widget class="QPushButton" name="buttonDebietOpenFolder">
+           <property name="text">
+            <string>Open Debiet Folder</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonDebietToCSV">
+           <property name="text">
+            <string>Convert Tjek PDF to CSV</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonConvertAllDebiet">
+           <property name="text">
+            <string>Convert All in Directory</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="ListViewDebietFiles"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="KredietVerticalLayout">
+         <item>
+          <widget class="QPushButton" name="buttonKredietOpenFolder">
+           <property name="text">
+            <string>Open Krediet Folder</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonKredietToCSV">
+           <property name="text">
+            <string>Convert Tjek PDF to CSV</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonConvertAllKrediet">
+           <property name="text">
+            <string>Convert All in Directory</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="ListViewKredietFiles"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="AlleTransaskiesVerticalLayout">
+         <item>
+          <widget class="QPushButton" name="buttonAlleTranOpenFolder">
+           <property name="text">
+            <string>Open Alle Transaksies Folder</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonAlleTranToCSV">
+           <property name="text">
+            <string>Convert Tjek PDF to CSV</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_3">
+           <property name="text">
+            <string>Convert All in Directory</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="ListViewAlleTranFiles"/>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
