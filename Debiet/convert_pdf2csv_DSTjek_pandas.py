@@ -49,7 +49,7 @@ def ConvertDebietToCSV(strFilename):
                             line)
 
         if begin_saldo_match == None:
-            begin_saldo_match = re.search(r"\d{1,2}/\d{2}/\d{4}.*Saldo Oorgedra.*\d*,?\d+\.\d{2}\s*")
+            begin_saldo_match = re.search(r"\d{1,2}/\d{2}/\d{4}.*Saldo (O|o)orgedra.*\d*,?\d+\.\d{2}\s*", line)
         if begin_saldo_match != None:
             print(begin_saldo_match[0])
             begin_saldo_line = begin_saldo_match[0]
