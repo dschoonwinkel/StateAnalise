@@ -4,10 +4,13 @@ from PySide2.QtCore import QStringListModel
 import glob
 import os
 import Debiet.convert_pdf2csv_DSTjek_pandas
+from sort_by_vendor import SortByVendor
+import re
 
 class FolderViewModel:
     def __init__(self, parent, strFolderButtonName, strConvertToCSVButtonName,
-                 strFileListViewName, strConvertToCSVScriptName, strConvertAllButtonName):
+                 strFileListViewName, strConvertToCSVScriptName, strConvertAllButtonName,
+                 strSortVendorButton=""):
         self.parent = parent
         self.buttonOpenFolder = parent.findChild(QPushButton, strFolderButtonName)
         self.buttonOpenFolder.clicked.connect(self.FolderButtonClicked)
@@ -23,6 +26,10 @@ class FolderViewModel:
 
         self.buttonConvertAll = parent.findChild(QPushButton, strConvertAllButtonName)
         self.buttonConvertAll.clicked.connect(self.ConvertAllClicked)
+
+        if strSortVendorButton != "":
+            self.buttonSortVendor = parent.findChild(QPushButton, strSortVendorButton)
+            self.buttonSortVendor.clicked.connect(self.SortByVendorClicked)
 
     def FolderButtonClicked(self):
         self.strFoldername = str(QFileDialog.getExistingDirectory(self.parent, "Select Directory", "C:\\Users\\danie\\Development\\StateAnalise\\State"))
@@ -44,5 +51,9 @@ class FolderViewModel:
         for file in files:
             print("Processing: ", file)
 
+    def SortByVendorClicked(self):
+        strFilenameToProcess = re.sub("\.pdf", "_transaksies.csv", self.strFullFilename)
+        print("Sort By Vendor file: ", strFilenameToProcess)
+        SortByVendor(strFilenameToProcess, True)
 
 

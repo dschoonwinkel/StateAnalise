@@ -42,6 +42,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="buttonDebietSortVendor">
+           <property name="text">
+            <string>Sort By Vendor</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QListView" name="ListViewDebietFiles"/>
          </item>
         </layout>
@@ -66,6 +73,13 @@
           <widget class="QPushButton" name="buttonConvertAllKrediet">
            <property name="text">
             <string>Convert All in Directory</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonKredietSortVendor">
+           <property name="text">
+            <string>Sort By Vendor</string>
            </property>
           </widget>
          </item>

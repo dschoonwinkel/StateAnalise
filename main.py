@@ -18,7 +18,8 @@ class StateMainWindow(QWidget):
                                               "buttonDebietToCSV",
                                               "ListViewDebietFiles",
                                               "convert_pdf2csv_DSTjek_pandas.py",
-                                              "buttonConvertAllDebiet")
+                                              "buttonConvertAllDebiet",
+                                              "buttonDebietSortVendor")
 
     def load_ui(self):
         loader = QUiLoader()
