@@ -28,20 +28,6 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonDebietToCSV">
-           <property name="text">
-            <string>Convert Tjek PDF to CSV</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="buttonConvertAllDebiet">
-           <property name="text">
-            <string>Convert All in Directory</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="buttonDebietSortVendor">
            <property name="text">
             <string>Sort By Vendor</string>
@@ -63,20 +49,6 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonKredietToCSV">
-           <property name="text">
-            <string>Convert Tjek PDF to CSV</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="buttonConvertAllKrediet">
-           <property name="text">
-            <string>Convert All in Directory</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="buttonKredietSortVendor">
            <property name="text">
             <string>Sort By Vendor</string>
@@ -94,20 +66,6 @@
           <widget class="QPushButton" name="buttonAlleTranOpenFolder">
            <property name="text">
             <string>Open Alle Transaksies Folder</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="buttonAlleTranToCSV">
-           <property name="text">
-            <string>Convert Tjek PDF to CSV</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_3">
-           <property name="text">
-            <string>Convert All in Directory</string>
            </property>
           </widget>
          </item>

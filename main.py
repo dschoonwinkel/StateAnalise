@@ -15,10 +15,7 @@ class StateMainWindow(QWidget):
         self.load_ui()
         self.DebietFolderVM = FolderViewModel(self,
                                               "buttonDebietOpenFolder",
-                                              "buttonDebietToCSV",
                                               "ListViewDebietFiles",
-                                              "convert_pdf2csv_DSTjek_pandas.py",
-                                              "buttonConvertAllDebiet",
                                               "buttonDebietSortVendor")
 
     def load_ui(self):

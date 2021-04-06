@@ -27,19 +27,19 @@ except FileExistsError:
 def match_category(data, category, strFilenameToProcess):
 #    print("\nCategory:", category)
 #    print("Search key:", match_strings_dict[category][0])
-    categories_dict[category] = data[data['Beskrywing'].str.contains(match_strings_dict[category][0])]
+    categories_dict[category] = data[data['Description'].str.contains(match_strings_dict[category][0])]
     
     for i in range(1,len(match_strings_dict[category])):
 #        print("Search key:", match_strings_dict[category][i])
         categories_dict[category] = pandas.concat(
             [categories_dict[category],
-            data[data['Beskrywing'].str.contains(match_strings_dict[category][i])]],
+            data[data['Description'].str.contains(match_strings_dict[category][i])]],
             )
         categories_dict[category] = categories_dict[category].drop_duplicates()
 #    print("\n")
 
     strDirectory, strFilename = os.path.split(strFilenameToProcess)
-    # print("Total of ", category + ":", "R%5.2f" % categories_dict[category]["Bedrag"].sum())
+    # print("Total of ", category + ":", "R%5.2f" % categories_dict[category]["Amount"].sum())
     category_filename = re.sub(".csv", "_" + category + ".csv", strFilename)
 #    print("Category_filename", category_filename)
     category_foldername = os.path.join(strDirectory, "by_category")
@@ -48,7 +48,7 @@ def match_category(data, category, strFilenameToProcess):
 #    print("category_filename", category_filename)
     categories_dict[category].to_csv(category_filename, mode='w')
 
-    category_totals[category] = categories_dict[category]["Bedrag"].sum()
+    category_totals[category] = categories_dict[category]["Amount"].sum()
 
 def get_remaining(data):
     """Rows from main dataframe which are not in any of the other frames"""
@@ -79,14 +79,26 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
         print(key, ":", "R%5.2f" % category_totals[key])
 
     print("\nRemaining:\n", remaining)
-    strRemainingFilename = re.sub(".csv", "_uncategorized.csv", strFilenameToProcess)
-    remaining.to_csv(strRemainingFilename)
 
-    category_totals["Sundries"] = remaining["Bedrag"].sum()
+    category_totals["Sundries"] = remaining["Amount"].sum()
     print("Sundries:", category_totals["Sundries"])
 
-    current_json = None
     directory, split_filename = os.path.split(strFilenameToProcess)
+    print(split_filename)
+    strRemainingFilename = re.sub(".csv", "_uncategorized.csv", split_filename)
+    print(strRemainingFilename)
+    strRemainingFilename = os.path.join("uncategorized", strRemainingFilename)
+    print(strRemainingFilename)
+    strRemainingFilename = os.path.join(directory, strRemainingFilename)
+    print(strRemainingFilename)
+    
+    try:
+        os.mkdir(os.path.join(directory,"uncategorized"))
+    except FileExistsError:
+        print("uncategorized folder already exists.")
+    remaining.to_csv(strRemainingFilename)
+    
+    current_json = None
     #Write out to MonthSummary
     strMonthSummaryFilename = os.path.join(directory, "MonthSummary.txt")
     try:
