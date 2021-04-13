@@ -58,6 +58,8 @@ def get_remaining(data):
 
 def SortByVendor(strFilenameToProcess, bPlotGraphs):
 
+    global categories, match_strings_dict
+    categories, match_strings_dict = read_categories()
     print("Filename:", strFilenameToProcess)
 
     try:
@@ -68,6 +70,13 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
 
     data = pandas.read_csv(strFilenameToProcess)
     # print(data)
+
+    # Make expenses a positive value
+    data['Amount'] = -1*data['Amount']
+
+    # Drop incomes (i.e. negative expenses)
+    data = data.drop(data[data['Amount'] <= 0].index)
+
 
     for category in categories:
         match_category(data, category, strFilenameToProcess)

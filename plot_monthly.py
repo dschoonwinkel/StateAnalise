@@ -95,6 +95,7 @@ def plot_stackedbargraph(category_totals, index, month, fig=None, ax=None, strFu
 
     bars = list()
     
+    print(keys)
     for i in range(len(keys)):
         key = keys[i]
         bars.append(ax.bar(index, values[i], bottom=bottom_value, color=category_to_colour[key]))

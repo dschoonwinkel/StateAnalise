@@ -13,7 +13,7 @@ def write_categories(filename, categories_list, match_strings_dict):
             categories_file.write("\n\n")
 
 
-def read_categories(filename=r"C:\Users\danie\Development\StateAnalise\categories1.txt"):
+def read_categories(filename=r"categories1.txt"):
 
     with open(filename, 'r') as categories_file:
         data = categories_file.readlines()
