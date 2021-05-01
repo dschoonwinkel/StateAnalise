@@ -1,5 +1,5 @@
 import re
-import pandas
+import pandas as pd
 import sys
 from read_write_categories import read_categories
 import matplotlib.pyplot as plot
@@ -31,7 +31,7 @@ def match_category(data, category, strFilenameToProcess):
     
     for i in range(1,len(match_strings_dict[category])):
 #        print("Search key:", match_strings_dict[category][i])
-        categories_dict[category] = pandas.concat(
+        categories_dict[category] = pd.concat(
             [categories_dict[category],
             data[data['Description'].str.contains(match_strings_dict[category][i])]],
             )
@@ -43,6 +43,11 @@ def match_category(data, category, strFilenameToProcess):
     category_filename = re.sub(".csv", "_" + category + ".csv", strFilename)
 #    print("Category_filename", category_filename)
     category_foldername = os.path.join(strDirectory, "by_category")
+    try:
+        os.mkdir(category_foldername)
+    except FileExistsError:
+#        print("%s folder already exists." % category_foldername)
+        pass
 #    print("category_foldername", category_foldername)
     category_filename = os.path.join(category_foldername, category_filename)
 #    print("category_filename", category_filename)
@@ -52,7 +57,7 @@ def match_category(data, category, strFilenameToProcess):
 
 def get_remaining(data):
     """Rows from main dataframe which are not in any of the other frames"""
-    sorted_df = pandas.concat(categories_dict)
+    sorted_df = pd.concat(categories_dict)
     df_diff = data.merge(sorted_df, how = 'outer' ,indicator=True).loc[lambda x : x['_merge']=='left_only'].iloc[:,:-1]
     return df_diff
 
@@ -68,15 +73,15 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
         print("File %s was not found: " % strFilenameToProcess)
         return
 
-    data = pandas.read_csv(strFilenameToProcess)
-    # print(data)
-
-    # Make expenses a positive value
-    data['Amount'] = -1*data['Amount']
+    data = pd.read_csv(strFilenameToProcess, parse_dates=["Date"])
+    print(data)
 
     # Drop incomes (i.e. negative expenses)
-    data = data.drop(data[data['Amount'] <= 0].index)
+    data = data.drop(data[data['Amount'] >= 0].index)
 
+    # Make expenses a positive value
+    data_to_display = data.copy()
+    data_to_display['Amount'] = -1*data['Amount']
 
     for category in categories:
         match_category(data, category, strFilenameToProcess)
@@ -129,7 +134,31 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
     print("Writing to MonthSummary")
     current_json[split_filename] = category_totals
     with open(strMonthSummaryFilename, 'w') as summary_file:
-        summary_file.write(json.dumps(current_json))
+        summary_file.write(json.dumps(current_json, indent=4, sort_keys=True))
+
+    matchMonthYear = re.search("\w{3}\d{4}", split_filename)
+    if matchMonthYear is not None:
+        strMonthYear = matchMonthYear[0]
+        AlleTransaksies_path = strMonthYear + '_together.csv'
+        AlleTransaksies_path = os.path.join(directory, "../AlleTransaksies/", AlleTransaksies_path)
+        print(AlleTransaksies_path)
+        try:
+            read_transaction_df = pd.read_csv(AlleTransaksies_path, index_col=0, parse_dates=["Date"])
+    #        print(read_transaction_df)
+    #        print("read_transaction_df", read_transaction_df.info())
+    #        print("transaction_df", transaction_df.info())
+            data = data.append(read_transaction_df, ignore_index=True)
+    #        print(transaction_df)
+            data = data.drop_duplicates()
+            data = data.sort_values(by="Date", ignore_index=True)
+    #        print(transaction_df)
+            print("Appended together transactions")
+
+        except FileNotFoundError:
+            print(AlleTransaksies_path + ' not found')
+
+        data.to_csv(AlleTransaksies_path, float_format="%2.2f")
+
 
     strPlotFolder = os.path.join(directory, "plots")
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>988</width>
     <height>600</height>
    </rect>
   </property>
@@ -61,11 +61,53 @@
         </layout>
        </item>
        <item>
+        <layout class="QVBoxLayout" name="IreneStateVerticalLayout">
+         <item>
+          <widget class="QPushButton" name="buttonIreneOpenFolder">
+           <property name="text">
+            <string>Open Irene State Folder</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonIreneSortVendor">
+           <property name="text">
+            <string>Sort By Vendor</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="listViewIrene"/>
+         </item>
+        </layout>
+       </item>
+       <item>
         <layout class="QVBoxLayout" name="AlleTransaskiesVerticalLayout">
          <item>
           <widget class="QPushButton" name="buttonAlleTranOpenFolder">
            <property name="text">
             <string>Open Alle Transaksies Folder</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonAlleSortVendor">
+           <property name="text">
+            <string>Sort By Vendor</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonCompareBudget">
+           <property name="text">
+            <string>Compare budget</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonBurnDown">
+           <property name="text">
+            <string>Burn down</string>
            </property>
           </widget>
          </item>

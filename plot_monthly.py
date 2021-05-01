@@ -23,6 +23,8 @@ def plot_piechart(strFullFilename, category_totals):
     #Plotting
     # print(category_totals.values())
     # print("\n===\nCategories in dictionary", categories_dict.keys())
+    for key in category_totals:
+        category_totals[key] = -1*category_totals[key]
     keys = list()
     values = list()
     extra_sundries = 0.0
@@ -64,6 +66,11 @@ def plot_piechart(strFullFilename, category_totals):
     plot.title(title_text)
     strPlotSavePath = re.sub(".csv", "_pie.pdf", strFilename)
     strPlotSaveDirectory = os.path.join(strDirectory, "plots")
+    try:
+        os.mkdir(strPlotSaveDirectory)
+    except FileExistsError:
+#        print("%s folder already exists." % category_foldername)
+        pass
     strPlotSavePath = os.path.join(strPlotSaveDirectory, strPlotSavePath)
     plot.savefig(strPlotSavePath)
 

@@ -3,6 +3,7 @@ from PySide2.QtWidgets import QFileDialog, QPushButton, QListView
 from PySide2.QtCore import QStringListModel
 import glob
 import os
+import datetime
 import Debiet.convert_pdf2csv_DSTjek_pandas
 from sort_by_vendor import SortByVendor
 import re
@@ -26,6 +27,14 @@ class FolderViewModel:
     def FolderButtonClicked(self):
         self.strFoldername = str(QFileDialog.getExistingDirectory(self.parent, "Select Directory", "C:\\Users\\danie\\Development\\StateAnalise\\State"))
         self.vstrFileNames = [os.path.basename(x) for x in glob.glob(os.path.join(self.strFoldername, "*.csv"))]
+        self.vtsMonthYear = list()
+        for strFilename in self.vstrFileNames:
+            match = re.search("\w{3}\d{4}", strFilename)
+            if match is not None:
+                self.vtsMonthYear.append(datetime.datetime.strptime(match[0], "%b%Y"))
+
+        self.vstrFileNames = [x for _,x in sorted(zip(self.vtsMonthYear,self.vstrFileNames))]
+
         self.StringModelFilesList.setStringList(self.vstrFileNames)
 
     def FileSelected(self, item):
