@@ -76,12 +76,8 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
     data = pd.read_csv(strFilenameToProcess, parse_dates=["Date"])
     print(data)
 
-    # Drop incomes (i.e. negative expenses)
+    # Drop incomes
     data = data.drop(data[data['Amount'] >= 0].index)
-
-    # Make expenses a positive value
-    data_to_display = data.copy()
-    data_to_display['Amount'] = -1*data['Amount']
 
     for category in categories:
         match_category(data, category, strFilenameToProcess)
@@ -98,13 +94,15 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
     print("Sundries:", category_totals["Sundries"])
 
     directory, split_filename = os.path.split(strFilenameToProcess)
+    bSortingAlleTransaksies = re.search("AlleTransaksies", directory) != None
+    print("Sorting Alle Transaksies:",bSortingAlleTransaksies)
     print(split_filename)
     strRemainingFilename = re.sub(".csv", "_uncategorized.csv", split_filename)
-    print(strRemainingFilename)
+#    print(strRemainingFilename)
     strRemainingFilename = os.path.join("uncategorized", strRemainingFilename)
-    print(strRemainingFilename)
+#    print(strRemainingFilename)
     strRemainingFilename = os.path.join(directory, strRemainingFilename)
-    print(strRemainingFilename)
+#    print(strRemainingFilename)
     
     try:
         os.mkdir(os.path.join(directory,"uncategorized"))
@@ -136,28 +134,34 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
     with open(strMonthSummaryFilename, 'w') as summary_file:
         summary_file.write(json.dumps(current_json, indent=4, sort_keys=True))
 
-    matchMonthYear = re.search("\w{3}\d{4}", split_filename)
-    if matchMonthYear is not None:
-        strMonthYear = matchMonthYear[0]
-        AlleTransaksies_path = strMonthYear + '_together.csv'
-        AlleTransaksies_path = os.path.join(directory, "../AlleTransaksies/", AlleTransaksies_path)
-        print(AlleTransaksies_path)
-        try:
-            read_transaction_df = pd.read_csv(AlleTransaksies_path, index_col=0, parse_dates=["Date"])
-    #        print(read_transaction_df)
-    #        print("read_transaction_df", read_transaction_df.info())
-    #        print("transaction_df", transaction_df.info())
-            data = data.append(read_transaction_df, ignore_index=True)
-    #        print(transaction_df)
-            data = data.drop_duplicates()
-            data = data.sort_values(by="Date", ignore_index=True)
-    #        print(transaction_df)
-            print("Appended together transactions")
+    if not bSortingAlleTransaksies:
+        matchMonthYear = re.search("\w{3}\d{4}", split_filename)
+        if matchMonthYear is not None:
+            strMonthYear = matchMonthYear[0]
+            AlleTransaksies_path = strMonthYear + '_together.csv'
+            AlleTransaksies_path = os.path.join(directory, "../AlleTransaksies/", AlleTransaksies_path)
+            strAlleTransaksiesDirectory = os.path.join(directory, "../AlleTransaksies/")
 
-        except FileNotFoundError:
-            print(AlleTransaksies_path + ' not found')
+            print(AlleTransaksies_path)
+            try:
+                read_transaction_df = pd.read_csv(AlleTransaksies_path, index_col=0, parse_dates=["Date"])
+        #        print(read_transaction_df)
+        #        print("read_transaction_df", read_transaction_df.info())
+        #        print("transaction_df", transaction_df.info())
+                data = data.append(read_transaction_df, ignore_index=True)
+        #        print(transaction_df)
+                data = data.drop_duplicates()
+                data = data.sort_values(by="Date", ignore_index=True)
+        #        print(transaction_df)
+                print("Appended together transactions")
 
-        data.to_csv(AlleTransaksies_path, float_format="%2.2f")
+            except FileNotFoundError:
+                print(AlleTransaksies_path + ' not found')
+            try:
+                os.mkdir(strAlleTransaksiesDirectory)
+            except FileExistsError:
+                pass
+            data.to_csv(AlleTransaksies_path, float_format="%2.2f")
 
 
     strPlotFolder = os.path.join(directory, "plots")

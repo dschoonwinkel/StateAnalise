@@ -1,47 +1,23 @@
-Kos: 3500.00
-Apteek Doktors: 167.39
-Kuns klas: 430.00
-Brandstof: 900.00
-Beleggings Bank: 4774.00
-Internet Airtime: 639.00
-Medies Irene: 1400.00
-Huur Elektrisiteit: 10000.00
-Discovery Vitality: 280.00
-Subscriptions : 251.00
-Hardeware: 0.00
-
-
-"Kos": 3500.00
-"Huur Elektrisiteit": 10000.00
-"Brandstof": 900.00
-"Uiteet": 0.0
-"Online Shopping": 0.0
-"Uitstappies": 0.0
-"Hardeware": 0.0
-"Sport toerusting": 0.0
-"Reis": 0.0
-"Klere": 0.0
-"Apteek Doktors"
-"Huis toerusting"
-"Skryfbehoeftes"
-"Internet Airtime"
-"Beleggings Bank"
-"Discovery"
-"Subscriptions"
-
-"Apteek Doktors": -368.69,
-"Beleggings Bank": -4562.75,
-"Brandstof": -2192.1499999999996,
-"Hardeware": -1590.58,
-"Huis toerusting": -1640.74,
-"Huur Elektrisiteit": -9800.0,
-"Internet Airtime": -626.81,
-"Klere": 0.0,
-"Kos": -4077.49,
-"Online Shopping": 0.0,
-"Reis": -1200.0,
-"Skryfbehoeftes": -250.46,
-"Sport toerusting": 0.0,
-"Sundries": -1669.0,
-"Uiteet": -1346.2,
-"Uitstappies": 0.0
+{
+    "Budget": {
+        "Kos": 3500.00,
+        "Huur Elektrisiteit": 10000.00,
+        "Brandstof": 900.00,
+        "Uiteet": 0.0,
+        "Online Shopping": 0.0,
+        "Hardeware": 0.0,
+        "Sport toerusting": 0.0,
+        "Reis": 0.0,
+        "Klere": 0.0,
+        "Apteek Doktors":R180.00,
+        "Huis toerusting":0.0,
+        "Skryfbehoeftes":0.0,
+        "Internet Airtime":639.00,
+        "Beleggings Bank":4774.0,
+        "Discovery Medies":1690.00,
+        "Subscriptions":251.00,
+        "Kontant":0.0,
+        "Spaar": 0.0,
+        "Sundries":0.0
+    }
+}

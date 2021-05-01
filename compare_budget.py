@@ -1,29 +1,45 @@
+import json
+import os.path
 import pandas as pd
+import re
 
-def CompareBudgetWithActuals(strActualsFilename, strOutputFilename, strBudgetFilename="Budget.csv"):
-    budget_values = pd.read_csv(strBudgetFilename)
-    actuals_values = pd.read_csv(strActualsFilename)
+def CompareBudgetWithActuals(strActualsFilename, strBudgetFilename="Budget.txt"):
+    budget_dict = JSONFileToDict(strBudgetFilename)["Budget"]
+    for key in budget_dict:
+        print(key, ":", budget_dict[key])
 
-    for key in budget_values:
-        print(budget_values[budget_values["category"] == key])
+    strDirectory, strFilename = os.path.split(strActualsFilename)
+    strMonthSummaryFilename = os.path.join(strDirectory, "MonthSummary.txt")
+    actuals_dict = JSONFileToDict(strMonthSummaryFilename)[strFilename]
+    print(actuals_dict)
 
+    dfBudgetActualsDiff = pd.DataFrame(columns=["Item", "Budget", "Actual", "Difference"])
+
+    for key in actuals_dict.keys():
+        print("%s: Budget %4.2f, Actual %4.2f, Diff %4.2f" % (key, budget_dict[key], -1*actuals_dict[key], budget_dict[key]+actuals_dict[key]))
+        dfBudgetActualsDiff = dfBudgetActualsDiff.append({"Item":key, "Budget":budget_dict[key], "Actual":-1*actuals_dict[key], "Difference":budget_dict[key]+actuals_dict[key]}, ignore_index=True)
+
+    strOutputFilename = re.sub(".csv", "_budgetdiff.csv", strFilename)
+    strOutputFilename = os.path.join(strDirectory, strOutputFilename)
+
+    dfBudgetActualsDiff.to_csv(strOutputFilename)
+
+def JSONFileToDict(strFilename):
+    with open(strFilename, 'r') as JSONfile:
+        file_contents = JSONfile.read()
+        current_json = json.loads(file_contents)
+#        print(current_json)
+        return current_json
 
 def PrintBudget():
-    Inkopies	R3,500.00
-    Irene pille	R167.39
-    Kuns klas	R430.00
-    Brandstof	R900.00
-    Netflix	R139.00
-    Rachel Patreon	R32.00
-    Bankkostes	R274.00
-    Mweb Internet	R639.00
-    Medies Irene	R1,400.00
-    Huur	R9,500.00
-    Elektrisiteit	R500.00
-    Discovery Vitality	R290.00
-    Belegging	R4,500.00
-    Apple Music	R80.00
+    budget_dict = dict()
+    budget_dict["Budget"] = dict()
+    budget_dict["Budget"]["Bank"] = 0.0
+    print(json.dumps(budget_dict, indent=4, sort_keys=True))
+    with open("Budget.txt", 'r') as budget_file:
+        file_contents = budget_file.read()
+        current_json = json.loads(file_contents)
+        print(current_json)
 
-
- if __name__ == "__main__":
+if __name__ == "__main__":
      PrintBudget()

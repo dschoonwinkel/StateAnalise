@@ -98,14 +98,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonCompareBudget">
+          <widget class="QPushButton" name="buttonAlleCompareBudget">
            <property name="text">
             <string>Compare budget</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonBurnDown">
+          <widget class="QPushButton" name="buttonAlleBurnDown">
            <property name="text">
             <string>Burn down</string>
            </property>

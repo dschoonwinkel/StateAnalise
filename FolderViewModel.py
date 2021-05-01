@@ -6,11 +6,12 @@ import os
 import datetime
 import Debiet.convert_pdf2csv_DSTjek_pandas
 from sort_by_vendor import SortByVendor
+from compare_budget import CompareBudgetWithActuals
 import re
 
 class FolderViewModel:
     def __init__(self, parent, strFolderButtonName, strFileListViewName,
-                 strSortVendorButton=""):
+                 strSortVendorButton="", strCompareBudgetButton="", strBurnDownButton=""):
         self.parent = parent
         self.buttonOpenFolder = parent.findChild(QPushButton, strFolderButtonName)
         self.buttonOpenFolder.clicked.connect(self.FolderButtonClicked)
@@ -23,6 +24,14 @@ class FolderViewModel:
         if strSortVendorButton != "":
             self.buttonSortVendor = parent.findChild(QPushButton, strSortVendorButton)
             self.buttonSortVendor.clicked.connect(self.SortByVendorClicked)
+
+        if strCompareBudgetButton != "":
+            self.buttonCompareBudget = parent.findChild(QPushButton, strCompareBudgetButton)
+            self.buttonCompareBudget.clicked.connect(self.CompareBudgetClicked)
+
+        if strBurnDownButton != "":
+            self.buttonBurnDown = parent.findChild(QPushButton, strBurnDownButton)
+            self.buttonBurnDown.clicked.connect(self.BurnDownClicked)
 
     def FolderButtonClicked(self):
         self.strFoldername = str(QFileDialog.getExistingDirectory(self.parent, "Select Directory", "C:\\Users\\danie\\Development\\StateAnalise\\State"))
@@ -49,3 +58,9 @@ class FolderViewModel:
         SortByVendor(strFilenameToProcess, True)
 
 
+    def CompareBudgetClicked(self):
+        print("Compare button clicked", self.strFullFilename)
+        CompareBudgetWithActuals(self.strFullFilename)
+
+    def BurnDownClicked(self):
+        print("Burn Down button clicked")
