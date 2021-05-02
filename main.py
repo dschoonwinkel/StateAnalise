@@ -15,21 +15,25 @@ class StateMainWindow(QWidget):
         self.DebietFolderVM = FolderViewModel(self,
                                               "buttonDebietOpenFolder",
                                               "ListViewDebietFiles",
-                                              "buttonDebietSortVendor")
+                                              "buttonDebietSortVendor",
+                                              "buttonDebietBurnDown")
         self.KredietFolderVM = FolderViewModel(self,
                                             "buttonKredietOpenFolder",
                                             "ListViewKredietFiles",
-                                            "buttonKredietSortVendor")
+                                            "buttonKredietSortVendor",
+                                            "buttonKredietBurnDown")
         self.IreneFolderVM = FolderViewModel(self,
                                             "buttonIreneOpenFolder",
                                             "listViewIrene",
-                                            "buttonIreneSortVendor")
+                                            "buttonIreneSortVendor",
+                                            "buttonIreneBurnDown")
         self.AlleFolderVM = FolderViewModel(self,
                                             "buttonAlleTranOpenFolder",
                                             "ListViewAlleTranFiles",
                                             "buttonAlleSortVendor",
+                                            "buttonAlleBurnDown",
                                             "buttonAlleCompareBudget",
-                                            "buttonAlleBurnDown")
+                                            "buttonAllePlotMonthlies")
 
     def load_ui(self):
         loader = QUiLoader()

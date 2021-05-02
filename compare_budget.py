@@ -4,6 +4,9 @@ import pandas as pd
 import re
 
 def CompareBudgetWithActuals(strActualsFilename, strBudgetFilename="Budget.txt"):
+    budget_dict = JSONFileToDict(strBudgetFilename)
+    print(budget_dict)
+
     budget_dict = JSONFileToDict(strBudgetFilename)["Budget"]
     for key in budget_dict:
         print(key, ":", budget_dict[key])

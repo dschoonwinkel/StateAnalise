@@ -7,11 +7,12 @@ import datetime
 import Debiet.convert_pdf2csv_DSTjek_pandas
 from sort_by_vendor import SortByVendor
 from compare_budget import CompareBudgetWithActuals
+from plot_monthly import PlotStackedBarFilename
 import re
 
 class FolderViewModel:
     def __init__(self, parent, strFolderButtonName, strFileListViewName,
-                 strSortVendorButton="", strCompareBudgetButton="", strBurnDownButton=""):
+                 strSortVendorButton="", strBurnDownButton="", strCompareBudgetButton="", strPlotMonthliesButton=""):
         self.parent = parent
         self.buttonOpenFolder = parent.findChild(QPushButton, strFolderButtonName)
         self.buttonOpenFolder.clicked.connect(self.FolderButtonClicked)
@@ -32,6 +33,10 @@ class FolderViewModel:
         if strBurnDownButton != "":
             self.buttonBurnDown = parent.findChild(QPushButton, strBurnDownButton)
             self.buttonBurnDown.clicked.connect(self.BurnDownClicked)
+
+        if strPlotMonthliesButton != "":
+            self.buttonPlotMonthlies = parent.findChild(QPushButton, strPlotMonthliesButton)
+            self.buttonPlotMonthlies.clicked.connect(self.PlotMonthliesClicked)
 
     def FolderButtonClicked(self):
         self.strFoldername = str(QFileDialog.getExistingDirectory(self.parent, "Select Directory", "C:\\Users\\danie\\Development\\StateAnalise\\State"))
@@ -57,10 +62,13 @@ class FolderViewModel:
         print("Sort By Vendor file: ", strFilenameToProcess)
         SortByVendor(strFilenameToProcess, True)
 
-
     def CompareBudgetClicked(self):
         print("Compare button clicked", self.strFullFilename)
         CompareBudgetWithActuals(self.strFullFilename)
 
     def BurnDownClicked(self):
         print("Burn Down button clicked")
+
+    def PlotMonthliesClicked(self):
+        print("Plot Monthly in directory: ", self.strFoldername)
+        PlotStackedBarFilename(self.strFoldername)

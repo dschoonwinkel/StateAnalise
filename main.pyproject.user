@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.14.2, 2021-05-01T23:30:50. -->
+<!-- Written by QtCreator 4.14.2, 2021-05-02T17:21:50. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -748,6 +748,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Budget</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/danie/Development/Python/PyQt/StateAnalise/Budget.txt</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/danie/Development/Python/PyQt/StateAnalise/Budget.txt</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{361dad5c-0c15-44af-8fd4-114ff620ae0c}</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\danie\Development\Python\PyQt\StateAnalise\Budget.txt</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>

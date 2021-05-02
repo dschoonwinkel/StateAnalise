@@ -35,6 +35,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="buttonDebietBurnDown">
+           <property name="text">
+            <string>Burn Down</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QListView" name="ListViewDebietFiles"/>
          </item>
         </layout>
@@ -52,6 +59,13 @@
           <widget class="QPushButton" name="buttonKredietSortVendor">
            <property name="text">
             <string>Sort By Vendor</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonKredietBurnDown">
+           <property name="text">
+            <string>Burn Down</string>
            </property>
           </widget>
          </item>
@@ -77,6 +91,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="buttonIreneBurnDown">
+           <property name="text">
+            <string>Burn Down</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QListView" name="listViewIrene"/>
          </item>
         </layout>
@@ -98,6 +119,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="buttonAlleBurnDown">
+           <property name="text">
+            <string>Burn down</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="buttonAlleCompareBudget">
            <property name="text">
             <string>Compare budget</string>
@@ -105,9 +133,9 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonAlleBurnDown">
+          <widget class="QPushButton" name="buttonAllePlotMonthlies">
            <property name="text">
-            <string>Burn down</string>
+            <string>Plot Monthlies</string>
            </property>
           </widget>
          </item>

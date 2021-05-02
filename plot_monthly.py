@@ -8,16 +8,15 @@ import json
 import os
 from datetime import datetime
 from matplotlib.lines import Line2D
+from matplotlib.cm import get_cmap
 
 categories, match_strings_dict = read_categories()
 categories.append("Sundries")
 category_to_colour = dict()
-plt_colours = plot.rcParams['axes.prop_cycle'].by_key()['color']
+#plt_colours = plot.rcParams['axes.prop_cycle'].by_key()['color']
+plt_colours = [i for i in get_cmap('tab20').colors]
 for i in range(len(categories)):
     category_to_colour[categories[i]] = plt_colours[i%len(plt_colours)]
-
-
-
 
 def plot_piechart(strFullFilename, category_totals):
     #Plotting
@@ -27,6 +26,7 @@ def plot_piechart(strFullFilename, category_totals):
         category_totals[key] = -1*category_totals[key]
     keys = list()
     values = list()
+    colours = list()
     extra_sundries = 0.0
     value_sum = np.sum(list(category_totals.values()))
     # print("value sum", value_sum)
@@ -36,6 +36,7 @@ def plot_piechart(strFullFilename, category_totals):
         if 100*float(category_totals[key])/value_sum > 0:
             keys.append(key)
             values.append(category_totals[key])
+            colours.append(category_to_colour[key])
         elif category_totals[key] == 0:
             print("Ignoring unused category", key)
             pass
@@ -52,7 +53,7 @@ def plot_piechart(strFullFilename, category_totals):
     fig = plot.figure()
     ax = fig.add_axes([0.2, 0.1, 0.4, 0.8])
 
-    wedges, texts, autotexts = ax.pie(values, labels=pie_labels, autopct='%1.1f%%')
+    wedges, texts, autotexts = ax.pie(values, labels=pie_labels, colors=colours, autopct='%1.1f%%')
 
     ax.legend(wedges, labels,
                 loc="center left",
@@ -86,7 +87,6 @@ def plot_stackedbargraph(category_totals, index, month, fig=None, ax=None, strFu
     keys = list()
     values = list()
     value_sum = np.sum(list(category_totals.values()))
-    plot_stackedbargraph.xticks.append(month)
 
     for key in category_totals.keys():
         if 100*float(category_totals[key])/value_sum > 0:
@@ -117,7 +117,6 @@ def plot_stackedbargraph(category_totals, index, month, fig=None, ax=None, strFu
         custom_labels.append(category)
 
     fig.legend(custom_lines, custom_labels,
-                loc="lower center",
                 bbox_to_anchor=(0.1, 0.1, 0.8, 0.5),
                 ncol=2)
 
@@ -130,20 +129,31 @@ def plot_stackedbargraph(category_totals, index, month, fig=None, ax=None, strFu
     strPlotSavePath = re.sub(".csv", "_barstack.pdf", strFilename)
     strPlotSaveDirectory = os.path.join(strDirectory, "plots")
     strPlotSavePath = os.path.join(strPlotSaveDirectory, strPlotSavePath)
-    ax.set_xticks(range(len(plot_stackedbargraph.xticks)))
-    ax.set_xticklabels(plot_stackedbargraph.xticks)
     plot.grid(which='major', alpha=0.3)
     plot.savefig(strPlotSavePath)
     return fig, ax
 
-plot_stackedbargraph.xticks = list()
+class MonthStackedBarGraph():
+    def __init__(self):
+        self.vstrMonths = list()
+        self.fig = None
+        self.ax = None
 
-def main():
-    if os.stat("MonthSummary.txt").st_size <= 2:
+    def PlotStackedBar(self, category_totals, iIndex, strMonthName):
+        self.vstrMonths.append(strMonthName)
+        self.fig, self.ax = plot_stackedbargraph(category_totals, iIndex, strMonthName, self.fig, self.ax)
+        self.ax.set_xticks(range(len(self.vstrMonths)))
+        self.ax.set_xticklabels(self.vstrMonths)
+
+def PlotStackedBarFilename(strFoldername):
+    strFullFilename = os.path.join(strFoldername, "MonthSummary.txt")
+    MonthGraph = MonthStackedBarGraph()
+
+    if os.stat(strFullFilename).st_size <= 2:
         print("No values in MonthSummary.txt")
-        exit(0)
+        return
 
-    with open("MonthSummary.txt", 'r') as summary_file:
+    with open(strFullFilename, 'r') as summary_file:
         contents = summary_file.read()
         monthly_summary = json.loads(contents)
 
@@ -158,11 +168,13 @@ def main():
         month = months[i]
         print(month[0:7])
         category_totals = monthly_summary[month]
+        MonthGraph.PlotStackedBar(category_totals, i, month)
         print(category_totals)
-        fig, ax = plot_stackedbargraph(category_totals, i, month[0:7], fig, ax)
 
     plot.show()
 
+def main():
+    PlotStackedBarFilename("")
 
 if __name__ == '__main__':
     main()
