@@ -2,6 +2,7 @@ import re
 import pandas
 import sys
 from read_write_categories import read_categories
+import matplotlib
 import matplotlib.pyplot as plot
 import numpy as np
 import json
@@ -168,6 +169,8 @@ def PlotStackedBarFilename(strFoldername):
         month = months[i]
         print(month[0:7])
         category_totals = monthly_summary[month]
+        for key in category_totals:
+            category_totals[key] = -1*category_totals[key]
         MonthGraph.PlotStackedBar(category_totals, i, month)
         print(category_totals)
 

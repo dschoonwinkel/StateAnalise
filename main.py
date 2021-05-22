@@ -6,12 +6,14 @@ from PySide2.QtWidgets import QApplication, QWidget, QPushButton
 from PySide2.QtCore import QFile
 from PySide2.QtUiTools import QUiLoader
 from FolderViewModel import FolderViewModel
+import matplotlib
 
 
 class StateMainWindow(QWidget):
     def __init__(self):
         super(StateMainWindow, self).__init__()
         self.load_ui()
+        self.setWindowTitle("State Analise " + self.GetVersionNumber())
         self.DebietFolderVM = FolderViewModel(self,
                                               "buttonDebietOpenFolder",
                                               "ListViewDebietFiles",
@@ -43,7 +45,13 @@ class StateMainWindow(QWidget):
         loader.load(ui_file, self)
         ui_file.close()
 
+    def GetVersionNumber(self):
+        f = open("version.txt", 'r')
+        return f.read()
+
 if __name__ == "__main__":
+    matplotlib.use('Qt5Agg')
+    matplotlib.pyplot.rcParams["figure.figsize"] = (12,6)
     app = QApplication([])
     widget = StateMainWindow()
     widget.show()
