@@ -12,7 +12,7 @@ import re
 
 class FolderViewModel:
     def __init__(self, parent, strFolderButtonName, strFileListViewName,
-                 strSortVendorButton="", strBurnDownButton="", strCompareBudgetButton="", strPlotMonthliesButton=""):
+                 strSortVendorButton="", strCompareBudgetButton="", strPlotMonthliesButton=""):
         self.parent = parent
         self.buttonOpenFolder = parent.findChild(QPushButton, strFolderButtonName)
         self.buttonOpenFolder.clicked.connect(self.FolderButtonClicked)
@@ -30,10 +30,6 @@ class FolderViewModel:
             self.buttonCompareBudget = parent.findChild(QPushButton, strCompareBudgetButton)
             self.buttonCompareBudget.clicked.connect(self.CompareBudgetClicked)
 
-        if strBurnDownButton != "":
-            self.buttonBurnDown = parent.findChild(QPushButton, strBurnDownButton)
-            self.buttonBurnDown.clicked.connect(self.BurnDownClicked)
-
         if strPlotMonthliesButton != "":
             self.buttonPlotMonthlies = parent.findChild(QPushButton, strPlotMonthliesButton)
             self.buttonPlotMonthlies.clicked.connect(self.PlotMonthliesClicked)
@@ -46,6 +42,9 @@ class FolderViewModel:
             match = re.search("\w{3}\d{4}", strFilename)
             if match is not None:
                 self.vtsMonthYear.append(datetime.datetime.strptime(match[0], "%b%Y"))
+                print(self.vtsMonthYear[-1])
+            elif re.search("combined.csv", strFilename) is not None:
+                self.vtsMonthYear.append(datetime.datetime(1970,1,1))
 
         self.vstrFileNames = [x for _,x in sorted(zip(self.vtsMonthYear,self.vstrFileNames))]
 
@@ -65,9 +64,6 @@ class FolderViewModel:
     def CompareBudgetClicked(self):
         print("Compare button clicked", self.strFullFilename)
         CompareBudgetWithActuals(self.strFullFilename)
-
-    def BurnDownClicked(self):
-        print("Burn Down button clicked")
 
     def PlotMonthliesClicked(self):
         print("Plot Monthly in directory: ", self.strFoldername)

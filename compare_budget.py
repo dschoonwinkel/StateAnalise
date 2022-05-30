@@ -2,6 +2,8 @@ import json
 import os.path
 import pandas as pd
 import re
+import sys
+from PySide2.QtWidgets import QMessageBox
 
 def CompareBudgetWithActuals(strActualsFilename, strBudgetFilename="Budget.txt"):
     budget_dict = JSONFileToDict(strBudgetFilename)
@@ -13,8 +15,16 @@ def CompareBudgetWithActuals(strActualsFilename, strBudgetFilename="Budget.txt")
 
     strDirectory, strFilename = os.path.split(strActualsFilename)
     strMonthSummaryFilename = os.path.join(strDirectory, "MonthSummary.txt")
-    actuals_dict = JSONFileToDict(strMonthSummaryFilename)[strFilename]
-    print(actuals_dict)
+    dictMonthSummary = JSONFileToDict(strMonthSummaryFilename)
+    if strFilename in dictMonthSummary:
+        actuals_dict = dictMonthSummary[strFilename]
+        print(actuals_dict)
+    else:
+        print("Actual expenses for %s not yet in MonthSummary.txt" % strFilename, file=sys.stderr)
+        msg = QMessageBox()
+        msg.setText("Error: Actual expenses for %s not yet in MonthSummary.txt. Run Sort Vendor" % strFilename)
+        msg.exec_()
+        return
 
     dfBudgetActualsDiff = pd.DataFrame(columns=["Item", "Budget", "Actual", "Difference"])
 

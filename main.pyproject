@@ -1,3 +1,3 @@
 {
-    "files": ["Debiet/sort_by_vendor.py","Debiet/plot_monthly.py","plot_monthly.py","Debiet/read_write_categories.py","form.ui","main.py","Debiet/convert_pdf2csv_DSTjek_pandas.py","sort_by_vendor.py","read_write_categories.py","FolderViewModel.py","Debiet/categories1.txt","categories1.txt","compare_budget.py","Budget.txt"]
+    "files": ["plot_monthly.py","read_write_categories.py","Debiet/read_write_categories.py","sort_by_vendor.py","Debiet/categories1.txt","Debiet/sort_by_vendor.py","main.py","categories1.txt","FolderViewModel.py","Debiet/convert_pdf2csv_DSTjek_pandas.py","Budget.txt","compare_budget.py","form.ui","Debiet/plot_monthly.py"]
 }
