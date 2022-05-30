@@ -168,7 +168,7 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
 
     if plot_graphs == True:
         plot_piechart(strFilenameToProcess, category_totals)
-        plot_stackedbargraph(category_totals, 0, split_filename[0:7], strFullFilename=strFilenameToProcess)
+#        plot_stackedbargraph(category_totals, 0, split_filename[0:7], strFullFilename=strFilenameToProcess)
 
     plot.show()
 
