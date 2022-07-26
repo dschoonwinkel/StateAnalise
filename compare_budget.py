@@ -4,6 +4,8 @@ import pandas as pd
 import re
 import sys
 from PySide2.QtWidgets import QMessageBox
+import matplotlib.pyplot as plt
+import numpy as np
 
 def CompareBudgetWithActuals(strActualsFilename, strBudgetFilename="Budget.txt"):
     budget_dict = JSONFileToDict(strBudgetFilename)
@@ -36,6 +38,7 @@ def CompareBudgetWithActuals(strActualsFilename, strBudgetFilename="Budget.txt")
     strOutputFilename = os.path.join(strDirectory, strOutputFilename)
 
     dfBudgetActualsDiff.to_csv(strOutputFilename)
+    PlotBudgetActualsDiff(dfBudgetActualsDiff)
 
 def JSONFileToDict(strFilename):
     with open(strFilename, 'r') as JSONfile:
@@ -53,6 +56,17 @@ def PrintBudget():
         file_contents = budget_file.read()
         current_json = json.loads(file_contents)
         print(current_json)
+
+def PlotBudgetActualsDiff(dfBudgetActualsDiff):
+    vRange = range(len(dfBudgetActualsDiff["Item"]))
+    vActualsRange = np.arange(0.4,len(dfBudgetActualsDiff["Item"]), 1)
+    print(vRange)
+    print(vActualsRange)
+    plt.bar(vRange, dfBudgetActualsDiff["Budget"], width=0.4)
+    plt.bar(vActualsRange, dfBudgetActualsDiff["Actual"], width=0.4)
+    plt.xticks(vRange, dfBudgetActualsDiff["Item"], rotation=45)
+    plt.show()
+
 
 if __name__ == "__main__":
      PrintBudget()

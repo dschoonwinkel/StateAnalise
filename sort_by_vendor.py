@@ -76,6 +76,7 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
     data = pd.read_csv(strFilenameToProcess, parse_dates=["Date"])
     print(data)
 
+    data_incomes = data[data['Amount'] >= 0].index
     # Drop incomes
     data = data.drop(data[data['Amount'] >= 0].index)
 
