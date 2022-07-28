@@ -41,6 +41,36 @@ def read_categories(filename=r"categories1.txt"):
 
     return categories_list, match_strings_dict
 
+def ReadIncomeCategories(filename=r"IncomeCategories.txt"):
+
+    with open(filename, 'r') as categories_file:
+        data = categories_file.readlines()
+
+    categories_list = list()
+    match_strings_dict = dict()
+
+    for i in range(len(data)):
+        if re.match(r"\[\w+(\s+\w+)*\]", data[i]):
+            category_name = re.sub(r"(\[|\]|\n)", "", data[i], count=3)
+            print("Category found:", category_name)
+
+            if len(data[i+1]) == 0 or re.search(r"\w+(\s+(\w|-)+)*(,|\n|\Z)", data[i+1]) == None:
+                print("Empty category", category_name)
+                continue
+
+            match_strings_dict[category_name] = list()
+            for item in re.finditer(r"\w+(\s+(\w|-)+)*(,|\n|\Z)", data[i+1]):
+                print(item[0])
+                item_text = re.sub(",", "", item[0])
+                item_text = re.sub("\n", "", item_text)
+                # print(item_text)
+                match_strings_dict[category_name].append(item_text)
+
+            categories_list.append(category_name)
+
+    print(categories_list, match_strings_dict)
+    return categories_list, match_strings_dict
+
 
 def main():
     categories = ["Kos", "Apteek", "Parkering", "Brandstof", "Hardeware", "Sport toerusting"]
@@ -58,12 +88,13 @@ def main():
     categories_read, match_string_read = read_categories("categories1.txt")
 
     print("Categories_read:", categories_read)
-    print("\nCategories_read == categories: " + 
+    print("\nCategories_read == categories: " +
         str(collections.Counter(categories) == collections.Counter(categories_read)))
 
     print("\nMatch_string_read:", match_string_read)
-    print("\nmatch_strings_dict == match_string_read: " + 
+    print("\nmatch_strings_dict == match_string_read: " +
         str(collections.Counter(match_strings_dict) == collections.Counter(match_string_read)))
+    ReadIncomeCategories("IncomeCategories.txt")
 
 if __name__ == '__main__':
     main()

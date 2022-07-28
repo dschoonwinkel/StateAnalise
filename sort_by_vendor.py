@@ -1,18 +1,16 @@
 import re
 import pandas as pd
 import sys
-from read_write_categories import read_categories
+from read_write_categories import read_categories, ReadIncomeCategories
 import matplotlib.pyplot as plot
 import numpy as np
 import json
 from plot_monthly import plot_stackedbargraph, plot_piechart
 import os
 
-categories_dict = dict()
 categories, match_strings_dict = read_categories()
+listIncomeCategories,dictIncomeMatchStrings = ReadIncomeCategories()
 print("Categories:", categories)
-
-category_totals = dict()
 
 plot_graphs = True
 try:
@@ -24,16 +22,17 @@ try:
 except FileExistsError:
     print("plots folder already exists.")
 
-def match_category(data, category, strFilenameToProcess):
+def match_category(data, category, dictMatchStrings, categories_dict, category_totals, strFilenameToProcess):
 #    print("\nCategory:", category)
-#    print("Search key:", match_strings_dict[category][0])
-    categories_dict[category] = data[data['Description'].str.contains(match_strings_dict[category][0])]
+#    print("Search key:", dictMatchStrings[category])
+#    print(data['Description'])
+    categories_dict[category] = data[data['Description'].str.contains(dictMatchStrings[category][0])]
     
-    for i in range(1,len(match_strings_dict[category])):
-#        print("Search key:", match_strings_dict[category][i])
+    for i in range(1,len(dictMatchStrings[category])):
+#        print("Search key:", dictMatchStrings[category][i])
         categories_dict[category] = pd.concat(
             [categories_dict[category],
-            data[data['Description'].str.contains(match_strings_dict[category][i])]],
+            data[data['Description'].str.contains(dictMatchStrings[category][i])]],
             )
         categories_dict[category] = categories_dict[category].drop_duplicates()
 #    print("\n")
@@ -55,7 +54,7 @@ def match_category(data, category, strFilenameToProcess):
 
     category_totals[category] = categories_dict[category]["Amount"].sum()
 
-def get_remaining(data):
+def get_remaining(data, categories_dict):
     """Rows from main dataframe which are not in any of the other frames"""
     sorted_df = pd.concat(categories_dict)
     df_diff = data.merge(sorted_df, how = 'outer' ,indicator=True).loc[lambda x : x['_merge']=='left_only'].iloc[:,:-1]
@@ -63,7 +62,6 @@ def get_remaining(data):
 
 def SortByVendor(strFilenameToProcess, bPlotGraphs):
 
-    global categories, match_strings_dict
     categories, match_strings_dict = read_categories()
     print("Filename:", strFilenameToProcess)
 
@@ -76,14 +74,23 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
     data = pd.read_csv(strFilenameToProcess, parse_dates=["Date"])
     print(data)
 
-    data_incomes = data[data['Amount'] >= 0].index
+    # Process incomes
+    data_incomes = data[data['Amount'] >= 0]
+    dictIncomeCategories = dict()
+    dictIncomeCategoryTotals = dict()
+    print(data_incomes)
+    for IncomeCategory in listIncomeCategories:
+        match_category(data_incomes, IncomeCategory, dictIncomeMatchStrings, dictIncomeCategories, dictIncomeCategoryTotals, strFilenameToProcess)
+
     # Drop incomes
-    data = data.drop(data[data['Amount'] >= 0].index)
+    data = data.drop(data[data['Amount'] > 0].index)
 
+    categories_dict = dict()
+    category_totals = dict()
     for category in categories:
-        match_category(data, category, strFilenameToProcess)
+        match_category(data, category, match_strings_dict, categories_dict, category_totals, strFilenameToProcess)
 
-    remaining = get_remaining(data)
+    remaining = get_remaining(data, categories_dict)
 
     print("Category totals:")
     for key in category_totals.keys():
@@ -150,6 +157,7 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
         #        print("read_transaction_df", read_transaction_df.info())
         #        print("transaction_df", transaction_df.info())
                 data = data.append(read_transaction_df, ignore_index=True)
+                data = data.append(data_incomes, ignore_index=True)
         #        print(transaction_df)
                 data = data.drop_duplicates()
                 data = data.sort_values(by="Date", ignore_index=True)
@@ -168,7 +176,7 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
     strPlotFolder = os.path.join(directory, "plots")
 
     if plot_graphs == True:
-        plot_piechart(strFilenameToProcess, category_totals)
+        plot_piechart(strFilenameToProcess, category_totals, dictIncomeCategoryTotals)
 #        plot_stackedbargraph(category_totals, 0, split_filename[0:7], strFullFilename=strFilenameToProcess)
 
     plot.show()

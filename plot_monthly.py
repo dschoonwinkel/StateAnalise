@@ -19,38 +19,39 @@ plt_colours = [i for i in get_cmap('tab20').colors]
 for i in range(len(categories)):
     category_to_colour[categories[i]] = plt_colours[i%len(plt_colours)]
 
-def plot_piechart(strFullFilename, category_totals):
+def plot_piechart(strFullFilename, category_totals, dictIncomeTotals):
     #Plotting
-    # print(category_totals.values())
+    print(category_totals.values())
     # print("\n===\nCategories in dictionary", categories_dict.keys())
     for key in category_totals:
         category_totals[key] = -1*category_totals[key]
     keys = list()
     values = list()
     colours = list()
-    extra_sundries = 0.0
-    value_sum = np.sum(list(category_totals.values()))
-    # print("value sum", value_sum)
+    ExpensesSum = np.sum(list(category_totals.values()))
+    IncomesSum = np.sum(list(dictIncomeTotals.values()))
+    print("Expenses Sum %2.2f" % ExpensesSum)
+    print("Incomes Sum %2.2f" % IncomesSum)
 
     #Ignore smallest values in pie chart
     for key in category_totals.keys():
-        if 100*float(category_totals[key])/value_sum > 0:
+        print(category_totals[key])
+        print("Percentage of total: ", 100*float(category_totals[key])/ExpensesSum)
+        if (category_totals[key] < 0):
+#            print("Not plotting income", key)
+            continue
+        elif category_totals[key] == 0:
+#            print("Ignoring unused category", key)
+            pass
+        else:
             keys.append(key)
             values.append(category_totals[key])
             colours.append(category_to_colour[key])
-        elif category_totals[key] == 0:
-            print("Ignoring unused category", key)
-            pass
-    #     else:
-    #         print("Adding small values to sundries, category:", key, "R%.2f" % category_totals[key])
-    #         extra_sundries += category_totals[key]
-
-    category_totals["Sundries"] += extra_sundries
 
     pie_labels = ["%s" % (keys[x]) for x in range(len(keys))]
     labels = ["%s:R%s" % (keys[x], format(values[x],",.2f").replace(",", " ")) for x in range(len(keys))]
 
-    # print(labels)
+    print(labels)
     fig = plot.figure()
     ax = fig.add_axes([0.2, 0.1, 0.4, 0.8])
 
@@ -65,7 +66,7 @@ def plot_piechart(strFullFilename, category_totals):
     title_text = re.sub(".csv", "", strFilename)
     title_text = re.sub("_raw", "", title_text)
     title_text = re.sub("_transaksies", "", title_text)
-    plot.title(title_text)
+    plot.title(title_text + "\n" + "Income R%2.2f, Expenses R%2.2f, Difference R%2.2f" % (IncomesSum, ExpensesSum, IncomesSum - ExpensesSum))
     strPlotSavePath = re.sub(".csv", "_pie.pdf", strFilename)
     strPlotSaveDirectory = os.path.join(strDirectory, "plots")
     try:
@@ -76,8 +77,6 @@ def plot_piechart(strFullFilename, category_totals):
     strPlotSavePath = os.path.join(strPlotSaveDirectory, strPlotSavePath)
     plot.savefig(strPlotSavePath)
 
-    category_totals["Sundries"] -= extra_sundries
-
 def plot_stackedbargraph(category_totals, index, month, fig=None, ax=None, strFullFilename="Monthly_stackedbar.pdf"):
     """Plot the stacked bar graph of category totals of one month"""
     if fig == None:
@@ -87,10 +86,10 @@ def plot_stackedbargraph(category_totals, index, month, fig=None, ax=None, strFu
 
     keys = list()
     values = list()
-    value_sum = np.sum(list(category_totals.values()))
+    ExpensesSum = np.sum(list(category_totals.values()))
 
     for key in category_totals.keys():
-        if 100*float(category_totals[key])/value_sum > 0:
+        if 100*float(category_totals[key])/ExpensesSum > 0:
             keys.append(key)
             values.append(category_totals[key])
         elif category_totals[key] == 0:
