@@ -61,3 +61,6 @@ DANIELCIRCUS,IRENECIRCUS,
 [Donasies]
 SUC Offering,
 
+[Salary]
+ACB CREDIT PERALEX,Pmt Author Payment-Lla,Salary-Lla,
+

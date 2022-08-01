@@ -6,6 +6,7 @@ import sys
 from PySide2.QtWidgets import QMessageBox
 import matplotlib.pyplot as plt
 import numpy as np
+from plot_monthly import plt_colours
 
 def CompareBudgetWithActuals(strActualsFilename, strBudgetFilename="Budget.txt"):
     budget_dict = JSONFileToDict(strBudgetFilename)
@@ -38,7 +39,7 @@ def CompareBudgetWithActuals(strActualsFilename, strBudgetFilename="Budget.txt")
     strOutputFilename = os.path.join(strDirectory, strOutputFilename)
 
     dfBudgetActualsDiff.to_csv(strOutputFilename)
-    PlotBudgetActualsDiff(dfBudgetActualsDiff)
+    PlotBudgetActualsDiff(dfBudgetActualsDiff, strOutputFilename)
 
 def JSONFileToDict(strFilename):
     with open(strFilename, 'r') as JSONfile:
@@ -57,14 +58,31 @@ def PrintBudget():
         current_json = json.loads(file_contents)
         print(current_json)
 
-def PlotBudgetActualsDiff(dfBudgetActualsDiff):
-    vRange = range(len(dfBudgetActualsDiff["Item"]))
-    vActualsRange = np.arange(0.4,len(dfBudgetActualsDiff["Item"]), 1)
+def PlotBudgetActualsDiff(dfBudgetActualsDiff, strPlotTitle):
+    dfBudgetActualsExpenses = dfBudgetActualsDiff[dfBudgetActualsDiff["Item"] != "Salary"]
+    vRange = range(len(dfBudgetActualsExpenses["Item"]))
+    vActualsRange = np.arange(0.4,len(dfBudgetActualsExpenses["Item"]), 1)
+    print(dfBudgetActualsExpenses)
     print(vRange)
     print(vActualsRange)
-    plt.bar(vRange, dfBudgetActualsDiff["Budget"], width=0.4)
-    plt.bar(vActualsRange, dfBudgetActualsDiff["Actual"], width=0.4)
-    plt.xticks(vRange, dfBudgetActualsDiff["Item"], rotation=45)
+    Indexes = dfBudgetActualsExpenses.index
+    print(Indexes)
+    plt.bar(vRange, dfBudgetActualsExpenses["Budget"], width=0.4, color=plt_colours[0], label="Budget")
+    for x_index in vRange:
+        Index = Indexes[x_index]
+        fYValue = dfBudgetActualsExpenses["Budget"][Index]
+        strYValue = "%2.0f" % fYValue
+        plt.text(x_index, fYValue, strYValue, color=plt_colours[0], ha='center')
+    plt.bar(vActualsRange, dfBudgetActualsExpenses["Actual"], width=0.4, color=plt_colours[2], label="Actual")
+    for x_index in vRange:
+        Index = Indexes[x_index]
+        fYValue = dfBudgetActualsExpenses["Actual"][Index]
+        strYValue = "%2.0f" % fYValue
+        plt.text(x_index + 0.4, fYValue, strYValue, color=plt_colours[2], ha='center')
+    plt.xticks(vRange, dfBudgetActualsExpenses["Item"], rotation=90)
+    plt.legend()
+    plt.title(strPlotTitle + ": Actuals vs Budget")
+    plt.subplots_adjust(top=0.9, bottom=0.4)
     plt.show()
 
 

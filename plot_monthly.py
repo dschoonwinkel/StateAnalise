@@ -19,17 +19,20 @@ plt_colours = [i for i in get_cmap('tab20').colors]
 for i in range(len(categories)):
     category_to_colour[categories[i]] = plt_colours[i%len(plt_colours)]
 
-def plot_piechart(strFullFilename, category_totals, dictIncomeTotals):
+def plot_piechart(strFullFilename, category_totals):
     #Plotting
-    print(category_totals.values())
+    print(category_totals)
     # print("\n===\nCategories in dictionary", categories_dict.keys())
+    IncomesSum = category_totals["Salary"]
     for key in category_totals:
         category_totals[key] = -1*category_totals[key]
     keys = list()
     values = list()
     colours = list()
-    ExpensesSum = np.sum(list(category_totals.values()))
-    IncomesSum = np.sum(list(dictIncomeTotals.values()))
+    ExpensesSum = 0
+    for key, value in category_totals.items():
+        if key != "Salary":
+            ExpensesSum += value
     print("Expenses Sum %2.2f" % ExpensesSum)
     print("Incomes Sum %2.2f" % IncomesSum)
 

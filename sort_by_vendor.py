@@ -74,22 +74,12 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
     data = pd.read_csv(strFilenameToProcess, parse_dates=["Date"])
     print(data)
 
-    # Process incomes
-    data_incomes = data[data['Amount'] >= 0]
-    dictIncomeCategories = dict()
-    dictIncomeCategoryTotals = dict()
-    print(data_incomes)
-    for IncomeCategory in listIncomeCategories:
-        match_category(data_incomes, IncomeCategory, dictIncomeMatchStrings, dictIncomeCategories, dictIncomeCategoryTotals, strFilenameToProcess)
-
-    # Drop incomes
-    data = data.drop(data[data['Amount'] > 0].index)
-
     categories_dict = dict()
     category_totals = dict()
     for category in categories:
         match_category(data, category, match_strings_dict, categories_dict, category_totals, strFilenameToProcess)
 
+    data = data.drop(data[data['Amount'] > 0].index) #Drop incomes
     remaining = get_remaining(data, categories_dict)
 
     print("Category totals:")
@@ -157,7 +147,6 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
         #        print("read_transaction_df", read_transaction_df.info())
         #        print("transaction_df", transaction_df.info())
                 data = data.append(read_transaction_df, ignore_index=True)
-                data = data.append(data_incomes, ignore_index=True)
         #        print(transaction_df)
                 data = data.drop_duplicates()
                 data = data.sort_values(by="Date", ignore_index=True)
@@ -176,7 +165,7 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
     strPlotFolder = os.path.join(directory, "plots")
 
     if plot_graphs == True:
-        plot_piechart(strFilenameToProcess, category_totals, dictIncomeCategoryTotals)
+        plot_piechart(strFilenameToProcess, category_totals)
 #        plot_stackedbargraph(category_totals, 0, split_filename[0:7], strFullFilename=strFilenameToProcess)
 
     plot.show()
