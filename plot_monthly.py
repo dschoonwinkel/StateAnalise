@@ -21,25 +21,27 @@ for i in range(len(categories)):
 
 def plot_piechart(strFullFilename, category_totals):
     #Plotting
-    print(category_totals)
+    print("Category totals:", category_totals)
     # print("\n===\nCategories in dictionary", categories_dict.keys())
-    IncomesSum = category_totals["Salary"]
     for key in category_totals:
         category_totals[key] = -1*category_totals[key]
     keys = list()
     values = list()
     colours = list()
     ExpensesSum = 0
+    IncomesSum = 0
     for key, value in category_totals.items():
-        if key != "Salary":
+        if value > 0:
             ExpensesSum += value
+        else:
+            IncomesSum += -value
     print("Expenses Sum %2.2f" % ExpensesSum)
     print("Incomes Sum %2.2f" % IncomesSum)
 
     #Ignore smallest values in pie chart
     for key in category_totals.keys():
-        print(category_totals[key])
-        print("Percentage of total: ", 100*float(category_totals[key])/ExpensesSum)
+#        print(category_totals[key])
+#        print("Percentage of total: ", 100*float(category_totals[key])/ExpensesSum)
         if (category_totals[key] < 0):
 #            print("Not plotting income", key)
             continue
@@ -54,7 +56,6 @@ def plot_piechart(strFullFilename, category_totals):
     pie_labels = ["%s" % (keys[x]) for x in range(len(keys))]
     labels = ["%s:R%s" % (keys[x], format(values[x],",.2f").replace(",", " ")) for x in range(len(keys))]
 
-    print(labels)
     fig = plot.figure()
     ax = fig.add_axes([0.2, 0.1, 0.4, 0.8])
 
@@ -105,7 +106,6 @@ def plot_stackedbargraph(category_totals, index, month, fig=None, ax=None, strFu
 
     bars = list()
     
-    print(keys)
     for i in range(len(keys)):
         key = keys[i]
         bars.append(ax.bar(index, values[i], bottom=bottom_value, color=category_to_colour[key]))
@@ -169,12 +169,10 @@ def PlotStackedBarFilename(strFoldername):
     ax = None
     for i in range(len(months)):
         month = months[i]
-        print(month[0:7])
         category_totals = monthly_summary[month]
         for key in category_totals:
             category_totals[key] = -1*category_totals[key]
         MonthGraph.PlotStackedBar(category_totals, i, month)
-        print(category_totals)
 
     plot.show()
 

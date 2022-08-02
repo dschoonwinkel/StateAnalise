@@ -1,7 +1,7 @@
 import re
 import pandas as pd
 import sys
-from read_write_categories import read_categories, ReadIncomeCategories
+from read_write_categories import read_categories
 import matplotlib.pyplot as plot
 import numpy as np
 import json
@@ -9,7 +9,6 @@ from plot_monthly import plot_stackedbargraph, plot_piechart
 import os
 
 categories, match_strings_dict = read_categories()
-listIncomeCategories,dictIncomeMatchStrings = ReadIncomeCategories()
 print("Categories:", categories)
 
 plot_graphs = True

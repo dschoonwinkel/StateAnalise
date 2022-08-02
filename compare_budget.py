@@ -39,7 +39,7 @@ def CompareBudgetWithActuals(strActualsFilename, strBudgetFilename="Budget.txt")
     strOutputFilename = os.path.join(strDirectory, strOutputFilename)
 
     dfBudgetActualsDiff.to_csv(strOutputFilename)
-    PlotBudgetActualsDiff(dfBudgetActualsDiff, strOutputFilename)
+    PlotBudgetActualsDiff(dfBudgetActualsDiff, strFilename)
 
 def JSONFileToDict(strFilename):
     with open(strFilename, 'r') as JSONfile:
@@ -52,21 +52,23 @@ def PrintBudget():
     budget_dict = dict()
     budget_dict["Budget"] = dict()
     budget_dict["Budget"]["Bank"] = 0.0
-    print(json.dumps(budget_dict, indent=4, sort_keys=True))
+#    print(json.dumps(budget_dict, indent=4, sort_keys=True))
     with open("Budget.txt", 'r') as budget_file:
         file_contents = budget_file.read()
         current_json = json.loads(file_contents)
-        print(current_json)
+#        print(current_json)
 
 def PlotBudgetActualsDiff(dfBudgetActualsDiff, strPlotTitle):
-    dfBudgetActualsExpenses = dfBudgetActualsDiff[dfBudgetActualsDiff["Item"] != "Salary"]
+    dfBudgetActualsExpenses = dfBudgetActualsDiff[dfBudgetActualsDiff["Actual"] > 0]
+    dfBudgetActualsIncomes = dfBudgetActualsDiff[dfBudgetActualsDiff["Actual"] < 0]
     vRange = range(len(dfBudgetActualsExpenses["Item"]))
     vActualsRange = np.arange(0.4,len(dfBudgetActualsExpenses["Item"]), 1)
     print(dfBudgetActualsExpenses)
-    print(vRange)
-    print(vActualsRange)
+    ExpensesSum = dfBudgetActualsExpenses["Actual"].sum()
+    IncomesSum = -1*dfBudgetActualsIncomes["Actual"].sum()
+    print("Expenses Sum %2.2f" % ExpensesSum)
+    print("Incomes Sum %2.2f" % IncomesSum)
     Indexes = dfBudgetActualsExpenses.index
-    print(Indexes)
     plt.bar(vRange, dfBudgetActualsExpenses["Budget"], width=0.4, color=plt_colours[0], label="Budget")
     for x_index in vRange:
         Index = Indexes[x_index]
@@ -81,7 +83,8 @@ def PlotBudgetActualsDiff(dfBudgetActualsDiff, strPlotTitle):
         plt.text(x_index + 0.4, fYValue, strYValue, color=plt_colours[2], ha='center')
     plt.xticks(vRange, dfBudgetActualsExpenses["Item"], rotation=90)
     plt.legend()
-    plt.title(strPlotTitle + ": Actuals vs Budget")
+
+    plt.title(strPlotTitle + ": Actuals vs Budget\n" + "Incomes R%2.2f Expenses R%2.2f" % (IncomesSum, ExpensesSum))
     plt.subplots_adjust(top=0.9, bottom=0.4)
     plt.show()
 
