@@ -10,18 +10,14 @@ from plot_monthly import plt_colours
 
 def CompareBudgetWithActuals(strActualsFilename, strBudgetFilename="Budget.txt"):
     budget_dict = JSONFileToDict(strBudgetFilename)
-    print(budget_dict)
 
     budget_dict = JSONFileToDict(strBudgetFilename)["Budget"]
-    for key in budget_dict:
-        print(key, ":", budget_dict[key])
 
     strDirectory, strFilename = os.path.split(strActualsFilename)
     strMonthSummaryFilename = os.path.join(strDirectory, "MonthSummary.txt")
     dictMonthSummary = JSONFileToDict(strMonthSummaryFilename)
     if strFilename in dictMonthSummary:
         actuals_dict = dictMonthSummary[strFilename]
-        print(actuals_dict)
     else:
         print("Actual expenses for %s not yet in MonthSummary.txt" % strFilename, file=sys.stderr)
         msg = QMessageBox()
@@ -32,7 +28,7 @@ def CompareBudgetWithActuals(strActualsFilename, strBudgetFilename="Budget.txt")
     dfBudgetActualsDiff = pd.DataFrame(columns=["Item", "Budget", "Actual", "Difference"])
 
     for key in actuals_dict.keys():
-        print("%s: Budget %4.2f, Actual %4.2f, Diff %4.2f" % (key, budget_dict[key], -1*actuals_dict[key], budget_dict[key]+actuals_dict[key]))
+#        print("%s: Budget %4.2f, Actual %4.2f, Diff %4.2f" % (key, budget_dict[key], -1*actuals_dict[key], budget_dict[key]+actuals_dict[key]))
         dfBudgetActualsDiff = dfBudgetActualsDiff.append({"Item":key, "Budget":budget_dict[key], "Actual":-1*actuals_dict[key], "Difference":budget_dict[key]+actuals_dict[key]}, ignore_index=True)
 
     strOutputFilename = re.sub(".csv", "_budgetdiff.csv", strFilename)
@@ -63,11 +59,8 @@ def PlotBudgetActualsDiff(dfBudgetActualsDiff, strPlotTitle):
     dfBudgetActualsIncomes = dfBudgetActualsDiff[dfBudgetActualsDiff["Actual"] < 0]
     vRange = range(len(dfBudgetActualsExpenses["Item"]))
     vActualsRange = np.arange(0.4,len(dfBudgetActualsExpenses["Item"]), 1)
-    print(dfBudgetActualsExpenses)
     ExpensesSum = dfBudgetActualsExpenses["Actual"].sum()
     IncomesSum = -1*dfBudgetActualsIncomes["Actual"].sum()
-    print("Expenses Sum %2.2f" % ExpensesSum)
-    print("Incomes Sum %2.2f" % IncomesSum)
     Indexes = dfBudgetActualsExpenses.index
     plt.bar(vRange, dfBudgetActualsExpenses["Budget"], width=0.4, color=plt_colours[0], label="Budget")
     for x_index in vRange:
