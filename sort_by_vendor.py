@@ -49,7 +49,8 @@ def match_category(data, category, dictMatchStrings, categories_dict, category_t
 #    print("category_foldername", category_foldername)
     category_filename = os.path.join(category_foldername, category_filename)
 #    print("category_filename", category_filename)
-    categories_dict[category].to_csv(category_filename, mode='w')
+    if len(categories_dict[category]) > 0:
+        categories_dict[category].to_csv(category_filename, mode='w')
 
     category_totals[category] = categories_dict[category]["Amount"].sum()
 
@@ -78,8 +79,10 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
     for category in categories:
         match_category(data, category, match_strings_dict, categories_dict, category_totals, strFilenameToProcess)
 
-    data = data.drop(data[data['Amount'] > 0].index) #Drop incomes
     remaining = get_remaining(data, categories_dict)
+    remaining_incomes = remaining[remaining['Amount'] > 0]
+    remaining = remaining.drop(remaining_incomes.index)
+    data = data.drop(remaining_incomes.index) #Drop incomes
 
     print("Category totals:")
     for key in category_totals.keys():
