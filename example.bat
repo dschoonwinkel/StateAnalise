@@ -1,1 +1,0 @@
-python sort_by_vendor.py Dec2020_transaksies.csv
