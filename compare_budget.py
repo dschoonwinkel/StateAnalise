@@ -27,9 +27,16 @@ def CompareBudgetWithActuals(strActualsFilename, strBudgetFilename="Budget.txt")
 
     dfBudgetActualsDiff = pd.DataFrame(columns=["Item", "Budget", "Actual", "Difference"])
 
-    for key in actuals_dict.keys():
-#        print("%s: Budget %4.2f, Actual %4.2f, Diff %4.2f" % (key, budget_dict[key], -1*actuals_dict[key], budget_dict[key]+actuals_dict[key]))
-        dfBudgetActualsDiff = dfBudgetActualsDiff.append({"Item":key, "Budget":budget_dict[key], "Actual":-1*actuals_dict[key], "Difference":budget_dict[key]+actuals_dict[key]}, ignore_index=True)
+    try:
+        for key in actuals_dict.keys():
+    #        print("%s: Budget %4.2f, Actual %4.2f, Diff %4.2f" % (key, budget_dict[key], -1*actuals_dict[key], budget_dict[key]+actuals_dict[key]))
+            dfBudgetActualsDiff = dfBudgetActualsDiff.append({"Item":key, "Budget":budget_dict[key], "Actual":-1*actuals_dict[key], "Difference":budget_dict[key]+actuals_dict[key]}, ignore_index=True)
+    except KeyError as e:
+        msg = QMessageBox()
+        print("Error: %s category not in Budget, please add it to the Budget.txt" % e.args)
+        msg.setText("Error: %s category not in Budget, please add it to the Budget.txt" % e.args)
+        msg.exec_()
+        return
 
     strOutputFilename = re.sub(".csv", "_budgetdiff.csv", strFilename)
     strOutputFilename = os.path.join(strDirectory, strOutputFilename)

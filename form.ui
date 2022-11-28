@@ -65,7 +65,7 @@
          <item>
           <widget class="QPushButton" name="buttonIreneOpenFolder">
            <property name="text">
-            <string>Open Irene State Folder</string>
+            <string>Open Spaar State Folder</string>
            </property>
           </widget>
          </item>
