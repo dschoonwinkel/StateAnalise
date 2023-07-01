@@ -34,7 +34,9 @@ class FolderViewModel:
             self.buttonPlotMonthlies.clicked.connect(self.PlotMonthliesClicked)
 
     def FolderButtonClicked(self):
-        self.strFoldername = str(QFileDialog.getExistingDirectory(self.parent, "Select Directory", "."))
+
+        self.strFoldername = str(QFileDialog.getExistingDirectory(self.parent, "Select Directory", "C:/Users/danie/Development/StateAnalise/State"))
+#        self.strFoldername = str(QFileDialog.getExistingDirectory(self.parent, "Select Directory", "."))
         self.vstrFileNames = [os.path.basename(x) for x in glob.glob(os.path.join(self.strFoldername, "*.csv"))]
         self.vtsMonthYear = list()
         for strFilename in self.vstrFileNames:
