@@ -7,11 +7,12 @@ import datetime
 from sort_by_vendor import SortByVendor
 from compare_budget import CompareBudgetWithActuals
 from plot_monthly import PlotStackedBarFilename
+from TableView import TableView
 import re
 
 class FolderViewModel:
     def __init__(self, parent, strFolderButtonName, strFileListViewName,
-                 strSortVendorButton="", strCompareBudgetButton="", strPlotMonthliesButton=""):
+                 strSortVendorButton="", strShowUncategorizedButton="", strCompareBudgetButton="", strPlotMonthliesButton=""):
         self.parent = parent
         self.buttonOpenFolder = parent.findChild(QPushButton, strFolderButtonName)
         self.buttonOpenFolder.clicked.connect(self.FolderButtonClicked)
@@ -24,6 +25,10 @@ class FolderViewModel:
         if strSortVendorButton != "":
             self.buttonSortVendor = parent.findChild(QPushButton, strSortVendorButton)
             self.buttonSortVendor.clicked.connect(self.SortByVendorClicked)
+
+        if strShowUncategorizedButton != "":
+            self.buttonShowUncategorized = parent.findChild(QPushButton, strShowUncategorizedButton)
+            self.buttonShowUncategorized.clicked.connect(self.ShowUncategorizedClicked)
 
         if strCompareBudgetButton != "":
             self.buttonCompareBudget = parent.findChild(QPushButton, strCompareBudgetButton)
@@ -61,6 +66,12 @@ class FolderViewModel:
         strFilenameToProcess = self.strFullFilename
         print("Sort By Vendor file: ", strFilenameToProcess)
         SortByVendor(strFilenameToProcess, True)
+
+    def ShowUncategorizedClicked(self):
+        strFilenameToProcess = self.strFullFilename
+        print("Show uncategorized file: ", strFilenameToProcess)
+        self.TableView = TableView(strFilenameToProcess)
+        self.TableView.show()
 
     def CompareBudgetClicked(self):
         print("Compare button clicked", self.strFullFilename)

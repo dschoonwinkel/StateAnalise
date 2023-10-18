@@ -17,19 +17,23 @@ class StateMainWindow(QWidget):
         self.DebietFolderVM = FolderViewModel(self,
                                               "buttonDebietOpenFolder",
                                               "ListViewDebietFiles",
-                                              "buttonDebietSortVendor")
+                                              "buttonDebietSortVendor",
+                                              "buttonDebietShowUncategorized")
         self.KredietFolderVM = FolderViewModel(self,
                                             "buttonKredietOpenFolder",
                                             "ListViewKredietFiles",
-                                            "buttonKredietSortVendor")
+                                            "buttonKredietSortVendor",
+                                            "buttonKredietShowUncategorized")
         self.IreneFolderVM = FolderViewModel(self,
                                             "buttonIreneOpenFolder",
                                             "listViewIrene",
-                                            "buttonIreneSortVendor")
+                                            "buttonIreneSortVendor",
+                                            "buttonIreneShowUncategorized")
         self.AlleFolderVM = FolderViewModel(self,
                                             "buttonAlleTranOpenFolder",
                                             "ListViewAlleTranFiles",
                                             "buttonAlleSortVendor",
+                                            "buttonAlleShowUncategorized",
                                             "buttonAlleCompareBudget",
                                             "buttonAllePlotMonthlies")
 

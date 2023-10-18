@@ -35,6 +35,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="buttonDebietShowUncategorized">
+           <property name="text">
+            <string>Show Uncategorized</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QListView" name="ListViewDebietFiles"/>
          </item>
         </layout>
@@ -52,6 +59,13 @@
           <widget class="QPushButton" name="buttonKredietSortVendor">
            <property name="text">
             <string>Sort By Vendor</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonKredietShowUncategorized">
+           <property name="text">
+            <string>Show Uncategorized</string>
            </property>
           </widget>
          </item>
@@ -77,6 +91,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="buttonIreneShowUncategorized">
+           <property name="text">
+            <string>Show Uncategorized</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QListView" name="listViewIrene"/>
          </item>
         </layout>
@@ -94,6 +115,13 @@
           <widget class="QPushButton" name="buttonAlleSortVendor">
            <property name="text">
             <string>Sort By Vendor</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonAlleShowUncategorized">
+           <property name="text">
+            <string>Show Uncategorized</string>
            </property>
           </widget>
          </item>
