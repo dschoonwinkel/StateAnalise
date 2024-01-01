@@ -31,6 +31,9 @@ def plot_piechart(strFullFilename, category_totals):
     ExpensesSum = 0
     IncomesSum = 0
     for key, value in category_totals.items():
+        if key == "Ignore":
+            continue
+
         if value > 0:
             ExpensesSum += value
         else:
@@ -40,6 +43,8 @@ def plot_piechart(strFullFilename, category_totals):
 
     #Ignore smallest values in pie chart
     for key in category_totals.keys():
+        if key == "Ignore":
+            continue
 #        print(category_totals[key])
 #        print("Percentage of total: ", 100*float(category_totals[key])/ExpensesSum)
         if (category_totals[key] < 0):
