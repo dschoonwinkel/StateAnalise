@@ -1,3 +1,3 @@
 {
-    "files": ["Debiet/categories1.txt","read_write_categories.py","plot_monthly.py","Debiet/plot_monthly.py","categories1.txt","compare_budget.py","Debiet/sort_by_vendor.py","Budget.txt","Debiet/read_write_categories.py","form.ui","TableView.py","FolderViewModel.py","main.py","IncomeCategories.txt","sort_by_vendor.py","Debiet/convert_pdf2csv_DSTjek_pandas.py","TableView.ui","TableModelExample.py", "uncategorized.csv"]
+    "files": ["main.py","form.ui","FolderViewModel.py","Debiet/plot_monthly.py","compare_budget.py","TableView.py","Debiet/convert_pdf2csv_DSTjek_pandas.py","plot_monthly.py","uncategorized.csv","TableView.ui","TableModelExample.py","categories1.txt","IncomeCategories.txt","Debiet/read_write_categories.py","Categories.py","Budget.txt","sort_by_vendor.py","Debiet/sort_by_vendor.py","Debiet/categories1.txt"]
 }

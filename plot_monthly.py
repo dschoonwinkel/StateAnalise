@@ -1,7 +1,7 @@
 import re
 import pandas
 import sys
-from read_write_categories import read_categories
+import Categories
 import matplotlib
 import matplotlib.pyplot as plot
 import numpy as np
@@ -11,13 +11,13 @@ from datetime import datetime
 from matplotlib.lines import Line2D
 from matplotlib.cm import get_cmap
 
-categories, match_strings_dict = read_categories()
-categories.append("Sundries")
+Categories.read_categories()
 category_to_colour = dict()
 #plt_colours = plot.rcParams['axes.prop_cycle'].by_key()['color']
 plt_colours = [i for i in get_cmap('tab20').colors]
-for i in range(len(categories)):
-    category_to_colour[categories[i]] = plt_colours[i%len(plt_colours)]
+for i in range(len(Categories.categories)):
+    category_to_colour[Categories.categories[i]] = plt_colours[i%len(plt_colours)]
+category_to_colour["Sundries"] = plt_colours[(len(Categories.categories)+1) % len(plt_colours)]
 
 def plot_piechart(strFullFilename, category_totals):
     #Plotting
@@ -113,7 +113,7 @@ def plot_stackedbargraph(category_totals, index, month, fig=None, ax=None, strFu
 
     custom_lines = list()
     custom_labels = list()
-    for category in categories:
+    for category in Categories.categories:
         custom_lines.append(Line2D([0], [0], 
                             color=category_to_colour[category], 
                             lw=4))

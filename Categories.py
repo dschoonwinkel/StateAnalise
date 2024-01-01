@@ -2,23 +2,26 @@ import re
 import collections
 from pathlib import Path
 
+categories = list()
+match_strings_dict = dict()
+
 def write_categories(filename, categories_list, match_strings_dict):
     with open(filename, 'w') as categories_file:
         for item in categories_list:
             categories_file.write("[" + item + "]\n")
 
             for match_item in match_strings_dict[item]:
-                categories_file.write(match_item+", ")
+                categories_file.write(match_item+",")
 
             categories_file.write("\n\n")
 
 
 def read_categories(filename=r"categories1.txt"):
-
+    global categories, match_strings_dict
     with open(filename, 'r') as categories_file:
         data = categories_file.readlines()
 
-    categories_list = list()
+    categories = list()
     match_strings_dict = dict()
 
     for i in range(len(data)):
@@ -31,15 +34,19 @@ def read_categories(filename=r"categories1.txt"):
                 continue
 
             match_strings_dict[category_name] = list()
-            for item in re.finditer(r"\w+(\s+\w+)*(,|\n|\Z)", data[i+1]):
-                item_text = re.sub(",", "", item[0])
-                item_text = re.sub("\n", "", item_text)
-                # print(item_text)
+            match_strings_splits = data[i+1].split(",")
+
+            for item in match_strings_splits:
+                item_text = re.sub("\n", "", item)
+                item_text = item_text.strip()
+                if len(item_text) == 0:
+                    continue
                 match_strings_dict[category_name].append(item_text)
 
-            categories_list.append(category_name)
 
-    return categories_list, match_strings_dict
+            categories.append(category_name)
+
+    return categories, match_strings_dict
 
 def main():
     categories = ["Kos", "Apteek", "Parkering", "Brandstof", "Hardeware", "Sport toerusting"]

@@ -1,15 +1,14 @@
 import re
 import pandas as pd
 import sys
-from read_write_categories import read_categories
+import Categories
 import matplotlib.pyplot as plot
 import numpy as np
 import json
 from plot_monthly import plot_stackedbargraph, plot_piechart
 import os
 
-categories, match_strings_dict = read_categories()
-print("Categories:", categories)
+print("Categories:", Categories.categories)
 
 plot_graphs = True
 try:
@@ -27,7 +26,7 @@ def match_category(data, category, dictMatchStrings, categories_dict, category_t
 #    print(data['Description'])
     categories_dict[category] = data[data['Description'].str.contains(dictMatchStrings[category][0])]
     
-    for i in range(1,len(dictMatchStrings[category])):
+    for i in range(1, len(dictMatchStrings[category])):
 #        print("Search key:", dictMatchStrings[category][i])
         categories_dict[category] = pd.concat(
             [categories_dict[category],
@@ -62,7 +61,8 @@ def get_remaining(data, categories_dict):
 
 def SortByVendor(strFilenameToProcess, bPlotGraphs):
 
-    categories, match_strings_dict = read_categories()
+    categories = Categories.categories
+    match_strings_dict = Categories.match_strings_dict
     print("Filename:", strFilenameToProcess)
 
     try:
@@ -95,7 +95,7 @@ def SortByVendor(strFilenameToProcess, bPlotGraphs):
 
     directory, split_filename = os.path.split(strFilenameToProcess)
     bSortingAlleTransaksies = re.search("AlleTransaksies", directory) != None
-    print("Sorting Alle Transaksies:",bSortingAlleTransaksies)
+    print("Sorting Alle Transaksies:", bSortingAlleTransaksies)
     print(split_filename)
     strRemainingFilename = re.sub(".csv", "_uncategorized.csv", split_filename)
 #    print(strRemainingFilename)
